@@ -12,16 +12,11 @@ namespace Pomelo.Web.Controllers
     /// </summary>
    
     public class HomeController : ControllerBase
-    {
-        
-
-        public IActionResult Admin()
-        {
-            //默认根目录为 wwwroot
-            return File("admin/index.html", "text/html");
-        }
-
-
+    {  
+        public string Index()
+        { 
+            return "文件服务已启动";
+        } 
       
     }
 }
