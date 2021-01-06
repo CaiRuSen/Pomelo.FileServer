@@ -1,0 +1,155 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Pomelo.Web</name>
+    </assembly>
+    <members>
+        <member name="T:Pomelo.Web.Controllers.BaseController">
+            <summary>
+            Base控制器
+            </summary>
+        </member>
+        <member name="F:Pomelo.Web.Controllers.BaseController._Logger">
+            <summary>
+            日志
+            </summary>
+        </member>
+        <member name="M:Pomelo.Web.Controllers.BaseController.GetAdminUserId">
+            <summary>
+            获取后台登陆用户的用户id
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Pomelo.Web.Controllers.BaseController.GetClientIP">
+            <summary>
+            获取客户端ip
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Pomelo.Web.Controllers.FileController.#ctor(Microsoft.Extensions.Logging.ILogger{Pomelo.Web.Controllers.BaseController},Microsoft.AspNetCore.Hosting.IHostingEnvironment)">
+            <summary>
+            文件上传
+            </summary>
+            <param name="logger"></param> 
+        </member>
+        <member name="M:Pomelo.Web.Controllers.FileController.ImageBase64Upload(Pomelo.Web.Controllers.File.Dto.Base64UploadInput,System.String,System.String)">
+            <summary>
+            图片base64上传
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Pomelo.Web.Controllers.FileController.ImageFileUpload(Microsoft.AspNetCore.Http.IFormFile,System.String,System.String,System.Int32,System.Int32,System.String)">
+            <summary>
+            图片文件上传
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Pomelo.Web.Controllers.FileController.FileUpload(Microsoft.AspNetCore.Http.IFormFile,System.String,System.String)">
+            <summary>
+            文件上传
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Pomelo.Web.Controllers.HomeController">
+            <summary>
+            Home控制器，用于页面跳转
+            </summary>
+        </member>
+        <member name="M:Pomelo.Web.Handle.ALiUploadHandle.AliUpload(System.IO.Stream,System.String)">
+            <summary>
+            阿里OSS上传
+            </summary>
+            <param name="filePath">"Content/Images/x.jpg</param>
+            <param name="stream"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Pomelo.Web.Handle.ALiUploadHandle.AliUpload(System.String,System.String)">
+            <summary>
+            阿里OSS上传
+            </summary>
+            <param name="filePath">"Content/Images/x.jpg</param>
+            <param name="file"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Pomelo.Web.Handle.ALiUploadHandle.GetAliConfig">
+            <summary>
+            获取阿里配置文件信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Pomelo.Web.Handle.AWSUploadHandle.GetAWSConfig">
+            <summary>
+             
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Pomelo.Web.Handle.LocalUploadHandle.LocalUpload(Microsoft.AspNetCore.Http.IFormFile,System.String)">
+            <summary>
+            文件本地上传
+            </summary>
+            <param name="filePath"></param> 
+            <param name="file"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Pomelo.Web.Handle.LocalUploadHandle.LocalUpload(System.IO.Stream,System.String)">
+            <summary>
+            文件本地上传
+            </summary>
+            <param name="filePath"></param> 
+            <param name="file"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Pomelo.Web.Handle.LocalUploadHandle.LocalUpload(System.String,System.String)">
+            <summary>
+            文件本地上传
+            </summary>
+            <param name="filePath"></param> 
+            <param name="file"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Pomelo.Web.Handle.LocalUploadHandle.Base64ImageLocalUpload(System.String,System.String,System.Byte[])">
+            <summary>
+            base64图片本地上传,含图片压缩
+            </summary>
+            <param name="filePath"></param>
+            <param name="fileName"></param>
+            <param name="bt"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Pomelo.Web.Handle.LocalUploadHandle.Bt2Image(System.Byte[])">
+            <summary>
+            根据字节流返回Image类型
+            </summary>
+            <param name="streamByte"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Pomelo.Web.Handle.QiniuUploadHandle.QiNiuUpload(System.String,System.String)">
+            <summary>
+            七牛OSS上传
+            </summary>
+            <param name="filePath">"Content/Images/x.jpg</param>
+            <param name="file"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Pomelo.Web.Handle.QiniuUploadHandle.QiNiuUpload(System.IO.Stream,System.String)">
+            <summary>
+            七牛OSS上传
+            </summary>
+            <param name="filePath">"Content/Images/x.jpg</param>
+            <param name="stream"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Pomelo.Web.Handle.QiniuUploadHandle.GetQiniuConfig">
+            <summary>
+            获取七牛云配置文件信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Pomelo.Web.Middleware.ErrorHandlingMiddleware">
+            <summary>
+            错误统一处理返回
+            </summary>
+        </member>
+    </members>
+</doc>
