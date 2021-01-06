@@ -3,11 +3,9 @@ using System.IO;
 using System.Web;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Pomelo.Web.Controllers.File.Dto;
-using Pomelo.Enum;
+using Pomelo.Web.Controllers.File.Dto; 
 using Pomelo.Model.Base;
-using Microsoft.Extensions.Configuration;
-using Aliyun.OSS;
+using Microsoft.Extensions.Configuration; 
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Cors;
 using System.Linq;
@@ -15,16 +13,13 @@ using Pomelo.Enum.Base;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using System.Drawing;
-using Pomelo.Common.Helper;
-using Qiniu.Util;
-using Qiniu.Storage;
-using Pomelo.Web.Middleware;
+using Pomelo.Common.Helper;  
 using Pomelo.Web.Handle;
 using Pomelo.Web.Filter;
+using System.Collections.Generic;
 
 namespace Pomelo.Web.Controllers
-{
-    [EnableCors("cors")]
+{ 
     [Route("api/[controller]/[action]")]
     [ApiController]
     public class FileController : BaseController
@@ -45,13 +40,15 @@ namespace Pomelo.Web.Controllers
         /// 图片base64上传
         /// </summary>
         /// <param name="input"></param>
+        /// <param name="AppId"></param>
+        /// <param name="AppSecret"></param>
         /// <returns></returns>
+        [PomeloAuthorize]
         [HttpPost]
         public async Task<BaseResultOutput> ImageBase64Upload(Base64UploadInput input, string AppId, string AppSecret)
         {
             BaseResultOutput baseResultOutput = new BaseResultOutput();
 
-           
             try
             {
                 string base64string = HttpUtility.UrlDecode(input.Base64);
@@ -59,6 +56,7 @@ namespace Pomelo.Web.Controllers
 
                 byte[] bt = Convert.FromBase64String(base64string);
                 MemoryStream stream = new MemoryStream(bt);
+
 
                 string filePath = $"Content/Image/{DateTime.Now.ToString("yyyyMMdd")}/";
                 string fileName = $"{Guid.NewGuid()}.jpg";
@@ -80,18 +78,22 @@ namespace Pomelo.Web.Controllers
         }
 
 
-
         /// <summary>
         /// 图片文件上传
         /// </summary>
+        /// <param name="file"></param>
+        /// <param name="AppId"></param>
+        /// <param name="AppSecret"></param>
+        /// <param name="Width">图片宽度</param>
+        /// <param name="Height">图片高度</param>
+        /// <param name="WaterText">文字水印</param>
         /// <returns></returns>
+        [PomeloAuthorize]
         [HttpPost]
-        [DisableRequestSizeLimit]
         public async Task<BaseResultOutput> ImageFileUpload(IFormFile file, string AppId, string AppSecret, int Width, int Height, string WaterText)
         {
-
             BaseResultOutput baseResultOutput = new BaseResultOutput();
- 
+
             try
             {
                 if (file == null)
@@ -101,6 +103,20 @@ namespace Pomelo.Web.Controllers
 
                     return baseResultOutput;
                 }
+
+                //图片文件校验 
+                switch (file.ContentType)
+                {
+                    case "image/jpeg":
+                        break;
+                    case "image/png":
+                        break;
+                    default:
+                        baseResultOutput.Code = ResultCode.Succeed;
+                        baseResultOutput.Data = "文件格式异常";
+                        return baseResultOutput;
+                }
+
 
                 string filePath = $"Content/Image/{DateTime.Now.ToString("yyyyMMdd")}/";
                 string fileName = $"{Guid.NewGuid()}.jpg";
@@ -130,10 +146,12 @@ namespace Pomelo.Web.Controllers
         }
 
 
-
         /// <summary>
         /// 文件上传
         /// </summary>
+        /// <param name="file"></param>
+        /// <param name="AppId"></param>
+        /// <param name="AppSecret"></param>
         /// <returns></returns>
         [PomeloAuthorize]
         [HttpPost]
@@ -147,6 +165,14 @@ namespace Pomelo.Web.Controllers
                 {
                     baseResultOutput.Code = ResultCode.Succeed;
                     baseResultOutput.Data = "文件接收异常";
+
+                    return baseResultOutput;
+                }
+
+                if (!CheckFileContentType(file))
+                {
+                    baseResultOutput.Code = ResultCode.Succeed;
+                    baseResultOutput.Data = "该文件格式不允许上传";
 
                     return baseResultOutput;
                 }
@@ -172,8 +198,37 @@ namespace Pomelo.Web.Controllers
 
 
 
+        /// <summary>
+        /// 校验上传文件的ContentType
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        private bool CheckFileContentType(IFormFile file)
+        { 
+            var contentTypeList = FileContentType();
+
+            foreach (var item in contentTypeList)
+            {
+                if (file.ContentType.Contains(item))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
 
 
+
+        /// <summary>
+        /// 获取配置文件ContentType内容
+        /// </summary>
+        /// <returns></returns>
+        private static List<string> FileContentType()
+        {
+            var config = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json").Build();
+            var contentType = config.GetSection("ContentType").Value.Split('|').ToList();
+            return contentType;
+        }
 
     }
 }
